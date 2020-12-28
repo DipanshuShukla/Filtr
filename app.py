@@ -1,14 +1,81 @@
-from flask import Flask, render_template, url_for, request, redirect
-from flask_sqlalchemy import SQLAlchemy
+from flask import Flask, render_template, url_for, request, redirect, session
 from werkzeug.utils import secure_filename
-import os
+from tempfile import mkdtemp
+from flask_session import Session
+from cs50 import SQL
+from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
+from werkzeug.security import check_password_hash, generate_password_hash
+import os, requests, urllib.parse
 
 app = Flask("__name__")
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
-db = SQLAlchemy(app)
+db = SQL("sqlite:///test.db")
 
 app.config["IMAGE_UPLOADS"] = "/home/codebunny/PycharmProjects/Filtr/static/img/uploads"
 app.config["ALLOWED_IMAGE_EXTENSIONS"] = ["JPEG", "JPG", "PNG", "GIF"]
+# app.config["IMAGE SELECTED"] =
+
+# Configure session to use filesystem (instead of signed cookies)
+app.config["SESSION_FILE_DIR"] = mkdtemp()
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
+
+
+def apology(message, code=400):
+    """Render message as an apology to user."""
+
+    def escape(s):
+        """
+        Escape special characters.
+
+        https://github.com/jacebrowning/memegen#special-characters
+        """
+        for old, new in [("-", "--"), (" ", "-"), ("_", "__"), ("?", "~q"),
+                         ("%", "~p"), ("#", "~h"), ("/", "~s"), ("\"", "''")]:
+            s = s.replace(old, new)
+        return s
+
+    return render_template("apology.html", top=code, bottom=escape(message)), code
+
+
+def login_required(f):
+    """
+    Decorate routes to require login.
+
+    http://flask.pocoo.org/docs/1.0/patterns/viewdecorators/
+    """
+
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if session.get("user_id") is None:
+            return redirect("/login")
+        return f(*args, **kwargs)
+
+    return decorated_function
+
+
+def lookup(symbol):
+    """Look up quote for symbol."""
+
+    # Contact API
+    try:
+        api_key = os.environ.get("API_KEY")
+        response = requests.get(
+            f"https://cloud-sse.iexapis.com/stable/stock/{urllib.parse.quote_plus(symbol)}/quote?token={api_key}")
+        response.raise_for_status()
+    except requests.RequestException:
+        return None
+
+    # Parse response
+    try:
+        quote = response.json()
+        return {
+            "name": quote["companyName"],
+            "price": float(quote["latestPrice"]),
+            "symbol": quote["symbol"]
+        }
+    except (KeyError, TypeError, ValueError):
+        return None
 
 
 def allowed_image(filename):
@@ -64,3 +131,109 @@ def upload_image():
                 return redirect(request.url)
 
     return render_template("/upload_image.html")
+
+
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    """Register user"""
+
+    # User reached route via POST (as by submitting a form via POST)
+    if request.method == "POST":
+
+        # Assign inputs to variables
+        input_username = request.form.get("username")
+        input_password = request.form.get("password")
+        input_confirmation = request.form.get("confirmation")
+
+        # Ensure username was submitted
+        if not input_username:
+            return apology("must provide username", 403)
+
+        # Ensure password was submitted
+        elif not input_password:
+            return apology("must provide password", 403)
+
+        # Ensure passwsord confirmation was submitted
+        elif not input_confirmation:
+            return apology("must provide password confirmation", 418)
+
+        elif not input_password == input_confirmation:
+            return apology("passwords must match", 418)
+
+        # Query database for username
+        username = db.execute("SELECT username FROM users WHERE username = :username",
+                              username=input_username)
+
+        # Ensure username is not already taken
+        if len(username) == 1:
+            return apology("sorry, username is already taken", 403)
+
+        # Query database to insert new user
+        else:
+            new_user = db.execute("INSERT INTO users (username, hash) VALUES (:username, :password)",
+                                  username=input_username,
+                                  password=generate_password_hash(input_password, method="pbkdf2:sha256",
+                                                                  salt_length=8))
+
+            if new_user:
+                # Keep newly registered user logged in
+                session["user_id"] = new_user
+
+            # Flash info for the user
+            flash(f"Registered as {input_username}")
+
+            # Redirect user to homepage
+            return redirect("/")
+
+    # User reached route via GET (as by clicking a link or via redirect)
+    else:
+        return render_template("register.html")
+
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    """Log user in"""
+
+    # Forget any user_id
+    session.clear()
+
+    # User reached route via POST (as by submitting a form via POST)
+    if request.method == "POST":
+
+        # Assign inputs to variables
+        input_username = request.form.get("username")
+        input_password = request.form.get("password")
+
+        # Ensure username was submitted
+        if not input_username:
+            return apology("must provide username", 403)
+
+        # Ensure password was submitted
+        elif not input_password:
+            return apology("must provide password", 403)
+
+        # Query database for username
+        username = db.execute("SELECT * FROM users WHERE username = :username",
+                              username=input_username)
+
+        # Ensure username exists and password is correct
+        if len(username) != 1 or not check_password_hash(username[0]["hash"], input_password):
+            return apology("invalid username and/or password", 403)
+
+        # Remember which user has logged in
+        session["user_id"] = username[0]["id"]
+
+        # Flash info for the user
+        flash(f"Logged in as {input_username}")
+
+        # Redirect user to home page
+        return redirect("/")
+
+    # User reached route via GET (as by clicking a link or via redirect)
+    else:
+        return render_template("login.html")
+
+
+@app.route("/filter", methods=["GET", "POST"])
+def filters():
+    return render_template("filter.html")

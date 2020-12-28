@@ -12,21 +12,21 @@
   <div class="row">
     <div class="col">
 
-      <h1>Upload an image</h1>
+      <h1 class="display-4">Upload an image</h1>
       <hr>
 
       <form action="/upload-image" method="POST" enctype="multipart/form-data">
 
         <div class="form-group">
-          <label>Select image</label>
           <div class="custom-file">
-            <input type="file" class="custom-file-input" name="image" id="image">
-            <label class="custom-file-label" for="image">Select image...</label>
+            <label class="formFileLg" for="image">Select image</label>
+            <input class="form-control" type="file" name="image" id="image">
           </div>
         </div>
-
-        <button type="submit" class="btn btn-primary">Upload</button>
-
+        <br><Br>
+        <center>
+        <button type="submit" class="btn btn-primary btn-lg">Upload</button>
+        </center>
       </form>
 
     </div>

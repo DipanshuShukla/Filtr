@@ -2,9 +2,8 @@
 <html lang="en">
 
 <head>
-    <!-- CSS only -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
-    <!-- JavaScript Bundle with Popper -->
+    <link href="/static/favicon.ico" rel="icon" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">    <!-- JavaScript Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 
@@ -12,8 +11,9 @@
 
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div class="container-fluid">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark justify-content-between">
+      <div class="container-fluid mr-sm-2">
+        <img src="/static/favicon.ico" width="50" height="50">
         <a class="navbar-brand" href="#"><h1>Filtr</h1></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -27,17 +27,30 @@
               <a class="nav-link" href="/upload-image">Upload</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Login</a>
+              <a class="nav-link" href="/filter">Browse Filters</a>
+            </li>
+              {% if session.user_id %}
+            <li class="nav-item">
+              <a class="nav-link" href="/logout">Log Out</a></li>
+            <li class="nav-item">
+              {% else %}
+              <a class="nav-link" href="/login">Login</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">SignUp</a>
+              <a class="nav-link" href="/register">Sign Up</a>
             </li>
+              {% endif %}
+
           </ul>
         </div>
       </div>
     </nav>
 
+    <main class="container p-5">
     {% block body %}{% endblock %}
+    </main>
+
+
 
 </body>
 </html>
