@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, request, redirect, session
+from flask import Flask, render_template, url_for, request, redirect, session, flash
 from werkzeug.utils import secure_filename
 from tempfile import mkdtemp
 from flask_session import Session
@@ -6,6 +6,9 @@ from cs50 import SQL
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from werkzeug.security import check_password_hash, generate_password_hash
 import os, requests, urllib.parse
+from functools import wraps
+
+from filter import *
 
 app = Flask("__name__")
 db = SQL("sqlite:///test.db")
@@ -106,6 +109,7 @@ def hello():
 
 
 @app.route("/upload-image", methods=["GET", "POST"])
+@login_required
 def upload_image():
     if request.method == "POST":
 
@@ -122,9 +126,12 @@ def upload_image():
 
                 image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
 
-                print("Image saved")
+                db.execute("INSERT INTO imgs (id, image) VALUES (:id, :image)",
+                           id=session.get("user_id"),
+                           image=filename)
 
-                return redirect(request.url)
+                print("Image saved")
+                return redirect("/filter")
 
             else:
                 print("That file extension is not allowed")
@@ -141,9 +148,14 @@ def register():
     if request.method == "POST":
 
         # Assign inputs to variables
+        input_name = request.form.get("name")
         input_username = request.form.get("username")
         input_password = request.form.get("password")
         input_confirmation = request.form.get("confirmation")
+
+        # Ensure name was submitted
+        if not input_name:
+            return apology("must provide your name", 403)
 
         # Ensure username was submitted
         if not input_username:
@@ -153,7 +165,7 @@ def register():
         elif not input_password:
             return apology("must provide password", 403)
 
-        # Ensure passwsord confirmation was submitted
+        # Ensure password confirmation was submitted
         elif not input_confirmation:
             return apology("must provide password confirmation", 418)
 
@@ -170,7 +182,8 @@ def register():
 
         # Query database to insert new user
         else:
-            new_user = db.execute("INSERT INTO users (username, hash) VALUES (:username, :password)",
+            new_user = db.execute("INSERT INTO users (name, username, hash) VALUES (:name, :username, :password)",
+                                  name=input_name,
                                   username=input_username,
                                   password=generate_password_hash(input_password, method="pbkdf2:sha256",
                                                                   salt_length=8))
@@ -185,7 +198,7 @@ def register():
             # Redirect user to homepage
             return redirect("/")
 
-    # User reached route via GET (as by clicking a link or via redirect)
+    # User reached route via GET (as by clicking a l</a>ink or via redirect)
     else:
         return render_template("register.html")
 
@@ -235,5 +248,27 @@ def login():
 
 
 @app.route("/filter", methods=["GET", "POST"])
+@login_required
 def filters():
-    return render_template("filter.html")
+    if request.method == "POST":
+        return render_template("filter.html")
+    else:
+        images = db.execute("SELECT image FROM imgs WHERE id = :id",
+                            id=session["user_id"])
+        imgs = []
+        for i in range(len(images)):
+            imgs.append(images[i]['image'])
+        # print(imgs)
+        return render_template("filter.html")
+        return render_template("browse_images.html", images=imgs)
+
+
+@app.route("/logout")
+def logout():
+    """Log user out"""
+
+    # Forget any user_id
+    session.clear()
+
+    # Redirect user to login form
+    return redirect("/")
