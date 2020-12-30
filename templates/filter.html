@@ -4,6 +4,14 @@
     <title>
         Filter
     </title>
+    <script>
+         function apply(Img){
+             document.getElementById('myImage')
+             .src=Img;
+             document.getElementById('dwnld')
+             .href=Img;
+         }
+      </script>
 {% endblock %}
 
 {% block body %}
@@ -12,9 +20,9 @@
             <hr>
 
           <p>
-            <img class="card-img-top-bg" src="static/img/filtered/1.png">
+            <img id="myImage" class="card-img-top-bg" src="static/img/filtered/1.png">
               <br>
-            <a href="#" class="btn btn-primary my-2">Download</a>
+            <a id="dwnld" href="static/img/filtered/1.png" class="btn btn-primary my-2" download>Download</a>
           </p>
 
 
@@ -28,7 +36,7 @@
                           <p class="card-text">{{names[i-1]}}</p>
                           <div class="d-flex justify-content-between align-items-center">
                             <div class="btn-group">
-                              <button type="button" class="btn btn-sm btn-outline-secondary">Apply</button>
+                              <button type="button" class="btn btn-sm btn-outline-secondary" onclick="apply('static/img/filtered/{{i}}.png');">Apply</button>
 
                           </div>
                         </div>
