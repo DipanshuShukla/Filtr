@@ -11,6 +11,7 @@ from functools import wraps
 from filter import *
 
 app = Flask("__name__")
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 db = SQL("sqlite:///test.db")
 
 app.config["IMAGE_UPLOADS"] = "/home/codebunny/PycharmProjects/Filtr/static/img/uploads"
@@ -22,6 +23,10 @@ app.config["SESSION_FILE_DIR"] = mkdtemp()
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
+
+app.config["FILTER_NAMES"] = ["Orignal", "Country", "Crossprocess", "Desert", "Lumo", "Nashville", "Portaesque",
+                              "Proviaesque",
+                              "Velviaesque"]
 
 
 def apology(message, code=400):
@@ -101,6 +106,17 @@ def allowed_image_filesize(filesize):
         return True
     else:
         return False
+
+
+@app.after_request
+def add_header(response):
+    """
+    Add headers to both force latest IE rendering engine or Chrome Frame,
+    and also to cache the rendered page for 10 minutes.
+    """
+    response.headers['X-UA-Compatible'] = 'IE=Edge,chrome=1'
+    response.headers['Cache-Control'] = 'public, max-age=0'
+    return response
 
 
 @app.route("/")
@@ -251,7 +267,9 @@ def login():
 @login_required
 def filters():
     if request.method == "POST":
-        return render_template("filter.html")
+        print(request.form['submit_button'])
+        create_filters(request.form['submit_button'])
+        return render_template("filter.html", names=app.config["FILTER_NAMES"])
     else:
         images = db.execute("SELECT image FROM imgs WHERE id = :id",
                             id=session["user_id"])
@@ -259,7 +277,7 @@ def filters():
         for i in range(len(images)):
             imgs.append(images[i]['image'])
         # print(imgs)
-        return render_template("filter.html")
+        #return render_template("filter.html", names=app.config["FILTER_NAMES"])
         return render_template("browse_images.html", images=imgs)
 
 

@@ -7,25 +7,33 @@
 {% endblock %}
 
 {% block body %}
-<center>admin
-<h1 class="display-4">image selection and filter</h1>
-    <div class="row row-cols-3 row-cols-md-3">
-      {% for img in images %}
-        <div class="col">
-          <div class="card">
-            <img src="/static/img/uploads/{{img}}" class="card-img-top" alt="...">
-          </div>
-        </div>
-      {% endfor %}
-        <a href="/upload-image">
-          <div class="col">
-            <div class="card">
-              <img src="/static/img/file-upload.png" class="card-img-top" alt="...">
+<center>
+    <form action="/filter" method="POST" >
+        <h1 class="display-4">image selection and filter</h1>
+            <div class="row row-cols-3 row-cols-md-3">
+              {% for img in images %}
+                <div class="col">
+                  <div class="card">
+                    <img src="/static/img/uploads/{{img}}" class="card-img-top" alt="...">
+                      <div class="card-body">
+                          <p class="card-text">{{img}}</p>
+                          <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                              <button type="submit" class="btn btn-sm btn-outline-secondary" name="submit_button" value="static/img/uploads/{{img}}">Try</button>
+                            </div>
+                          </div>
+                        </div>
+                  </div>
+                </div>
+              {% endfor %}
+                <a href="/upload-image">
+                  <div class="col">
+                    <div class="card">
+                      <img src="/static/img/file-upload.png" class="card-img-top" alt="...">
+                    </div>
+                  </div>
+                </a>
             </div>
-          </div>
-        </a>
-</div>
-
-<h6>other bullshit goes here</h6>
+    </form>
 </center>
 {% endblock %}

@@ -93,6 +93,7 @@ class FilterManager:
 
             return filter_array.astype(numpy.uint8)
 
+
 def create_filters(img):
     img = Image.open(img)
     image_array = numpy.array(img)
@@ -179,6 +180,7 @@ def create_filters(img):
 
     im = Image.fromarray(filter_array)
     im.save('static/img/filtered/9.png')
+
 
 if __name__ == '__main__':
 

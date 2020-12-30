@@ -7,170 +7,37 @@
 {% endblock %}
 
 {% block body %}
-    <!--header add kr dio-->
-    <main role="main">
 
-      <section class="jumbotron text-center">
-        <div class="container">
-          <h1 class="jumbotron-heading">Choose your Filter</h1>
-          <p class="lead text-muted">which kind of shit do you like?</p>
+          <h1 class="display-4">Choose your Filter</h1>
+            <hr>
+
           <p>
-            <img class="card-img-top" src="/static/img/uploads/315287.jpg">
-            <a href="#" class="btn btn-primary my-2">Main call to action</a>
-            <!--a href="#" class="btn btn-secondary my-2">Secondary action</a-->
+            <img class="card-img-top-bg" src="static/img/filtered/1.png">
+              <br>
+            <a href="#" class="btn btn-primary my-2">Download</a>
           </p>
-        </div>
-      </section>
 
-      <div class="album py-5 bg-light">
-        <div class="container">
 
-          <div class="row row-cols-4 row-cols-md- ">
-            <div class="col-md-4">
-              <div class="card mb-4 box-shadow">
-                <img class="card-img-top" src="holder.js/100px225?theme=thumb&bg=55595c&fg=eceeef&text=filter-1" alt="Card image cap">
-                <div class="card-body">
-                  <p class="card-text">Filter description</p>
-                  <div class="d-flex justify-content-between align-items-center">
-                    <div class="btn-group">
-                      <button type="button" class="btn btn-sm btn-outline-secondary">Apply</button>
+
+            <div class="row row-cols-9 row-cols-md-9 ">
+              {% for i in range(1,10) %}
+                    <div class="col">
+
+                        <img class="card-img-top" src="static/img/filtered/{{i}}.png" alt="Card image cap">
+                        <div class="card-body">
+                          <p class="card-text">{{names[i-1]}}</p>
+                          <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                              <button type="button" class="btn btn-sm btn-outline-secondary">Apply</button>
+
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    <!--small class="text-muted">9 mins</small-->
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="card mb-4 box-shadow">
-                <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&bg=55595c&fg=eceeef&text=filter-2" alt="Card image cap">
-                <div class="card-body">
-                  <p class="card-text">Filter description</p>
-                  <div class="d-flex justify-content-between align-items-center">
-                    <div class="btn-group">
-                      <button type="button" class="btn btn-sm btn-outline-secondary">Apply</button>
-                    </div>
-                    <!--small class="text-muted">9 mins</small-->
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="card mb-4 box-shadow">
-                <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&bg=55595c&fg=eceeef&text=filter-3" alt="Card image cap">
-                <div class="card-body">
-                  <p class="card-text">Filter description</p>
-                  <div class="d-flex justify-content-between align-items-center">
-                    <div class="btn-group">
-                      <button type="button" class="btn btn-sm btn-outline-secondary">Apply</button>
-                    </div>
-                    <!--small class="text-muted">9 mins</small-->
-                  </div>
-                </div>
-              </div>
+                {% endfor %}
             </div>
 
-            <div class="col-md-4">
-              <div class="card mb-4 box-shadow">
-                <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&bg=55595c&fg=eceeef&text=filter-4" alt="Card image cap">
-                <div class="card-body">
-                  <p class="card-text">Filter description</p>
-                  <div class="d-flex justify-content-between align-items-center">
-                    <div class="btn-group">
-                      <button type="button" class="btn btn-sm btn-outline-secondary">Apply</button>
-                    </div>
-                    <!--small class="text-muted">9 mins</small-->
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="card mb-4 box-shadow">
-                <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&bg=55595c&fg=eceeef&text=filter-5" alt="Card image cap">
-                <div class="card-body">
-                  <p class="card-text">Filter description</p>
-                  <div class="d-flex justify-content-between align-items-center">
-                    <div class="btn-group">
-                      <button type="button" class="btn btn-sm btn-outline-secondary">Apply</button>
-                    </div>
-                    <!--small class="text-muted">9 mins</small-->
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="card mb-4 box-shadow">
-                <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&bg=55595c&fg=eceeef&text=filter-6" alt="Card image cap">
-                <div class="card-body">
-                  <p class="card-text">Filter description</p>
-                  <div class="d-flex justify-content-between align-items-center">
-                    <div class="btn-group">
-                      <button type="button" class="btn btn-sm btn-outline-secondary">Apply</button>
-                    </div>
-                    <!--small class="text-muted">9 mins</small-->
-                  </div>
-                </div>
-              </div>
-            </div>
 
-            <div class="col-md-4">
-              <div class="card mb-4 box-shadow">
-                <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&bg=55595c&fg=eceeef&text=filter-7" alt="Card image cap">
-                <div class="card-body">
-                  <p class="card-text">Filter description</p>
-                  <div class="d-flex justify-content-between align-items-center">
-                    <div class="btn-group">
-                      <button type="button" class="btn btn-sm btn-outline-secondary">Apply</button>
-                    </div>
-                    <!--small class="text-muted">9 mins</small-->
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="card mb-4 box-shadow">
-                <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&bg=55595c&fg=eceeef&text=filter-8" alt="Card image cap">
-                <div class="card-body">
-                  <p class="card-text">Filter description</p>
-                  <div class="d-flex justify-content-between align-items-center">
-                    <div class="btn-group">
-                      <button type="button" class="btn btn-sm btn-outline-secondary">Apply</button>
-                    </div>
-                    <!--small class="text-muted">9 mins</small-->
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="card mb-4 box-shadow">
-                <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&bg=55595c&fg=eceeef&text=filter-9" alt="Card image cap">
-                <div class="card-body">
-                  <p class="card-text">Filter description</p>
-                  <div class="d-flex justify-content-between align-items-center">
-                    <div class="btn-group">
-                      <button type="button" class="btn btn-sm btn-outline-secondary">Apply</button>
-                    </div>
-                    <!--small class="text-muted">9 mins</small-->
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </main>
-
-    <footer class="text-muted">
-      <div class="container">
-        <p class="float-right">
-          <a href="#">Back to top</a>
-      </div>
-    </footer>
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 
 {% endblock %}
 
