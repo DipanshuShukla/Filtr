@@ -9,17 +9,18 @@
 {% block body %}
 <center>
     <form action="/filter" method="POST" >
-        <h1 class="display-4">image selection and filter</h1>
+        <h1 class="display-4">Image Selection</h1>
+        <hr>
             <div class="row row-cols-3 row-cols-md-3">
               {% for img in images %}
                 <div class="col">
                   <div class="card">
                     <img src="/static/img/uploads/{{img}}" class="card-img-top" alt="...">
                       <div class="card-body">
-                          <p class="card-text">{{img}}</p>
+                          <!p class="card-text">{{img}}<!/p>
                           <div class="d-flex justify-content-between align-items-center">
-                            <div class="btn-group">
-                              <button type="submit" class="btn btn-sm btn-outline-secondary" name="submit_button" value="static/img/uploads/{{img}}">Try</button>
+                            <div class="btn-group" >
+                              <button  type="submit" class="btn btn-sm btn-outline-secondary" name="submit_button" value="static/img/uploads/{{img}}">Try</button>
                             </div>
                           </div>
                         </div>
@@ -29,7 +30,8 @@
                 <a href="/upload-image">
                   <div class="col">
                     <div class="card">
-                      <img src="/static/img/file-upload.png" class="card-img-top" alt="...">
+                      <img src="/static/img/file-upload.png" class="card-img-top" alt="..." width="15%" height="10%">
+
                     </div>
                   </div>
                 </a>

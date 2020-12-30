@@ -20,10 +20,12 @@
             <hr>
 
           <p>
-            <img id="myImage" class="card-img-top-bg" src="static/img/filtered/1.png">
-              <br>
+            <img id="myImage" class="card-img-top" src="static/img/filtered/1.png" width="80%" height="80%">
+              <br><br>
+
             <a id="dwnld" href="static/img/filtered/1.png" class="btn btn-primary my-2" download>Download</a>
           </p>
+            <hr>
 
 
 
@@ -31,7 +33,7 @@
               {% for i in range(1,10) %}
                     <div class="col">
 
-                        <img class="card-img-top" src="static/img/filtered/{{i}}.png" alt="Card image cap">
+                        <img class="card-img-top" src="static/img/filtered/{{i}}.png" alt="Card image cap"height="40%">
                         <div class="card-body">
                           <p class="card-text">{{names[i-1]}}</p>
                           <div class="d-flex justify-content-between align-items-center">
@@ -44,6 +46,7 @@
                     </div>
                 {% endfor %}
             </div>
+            <hr>
 
 
 
