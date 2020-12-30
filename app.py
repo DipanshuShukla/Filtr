@@ -14,7 +14,7 @@ app = Flask("__name__")
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 db = SQL("sqlite:///test.db")
 
-app.config["IMAGE_UPLOADS"] = "/home/codebunny/PycharmProjects/Filtr/static/img/uploads"
+app.config["IMAGE_UPLOADS"] = "static/img/uploads"
 app.config["ALLOWED_IMAGE_EXTENSIONS"] = ["JPEG", "JPG", "PNG", "GIF"]
 # app.config["IMAGE SELECTED"] =
 
