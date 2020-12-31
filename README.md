@@ -15,8 +15,9 @@ Prerequisites: python3, Flask, CS50 python library (for the sql)
 To run it: `python app.py` or `flask run` in the code directory.
 
 ## Explanation
-The user may login or register their account through the designated pages.
-The users are then taken into the `/browse-images` route where the images uploaded by the user are displayed.
-The user may then click the try button to go on to the next page to apply some filters.
+The user may log in or register their account through the designated pages.
+The users are then taken into the `/browse-images` route where the images uploaded by the user are displayed which are different for the different users and is being kept track of using a database.
+The user may then select an image and click the try button to go on to the next page to apply some filters.
+There is also a link to a webpage where new images can be uploaded.
 When clicked on the try button, the user is taken into another webpage where the user then selects the filter to be applied using an intuitive user interface.
 On the filter page, the user may then download the filtered image using a designated download button.
