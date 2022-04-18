@@ -1,4 +1,5 @@
 # Filtr
+![filtr](/static/favicon.ico)
 
 **Environment:** Python, Flask, SQL, JavaScript, Jinja2, HTML5, CSS
 
